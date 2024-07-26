@@ -1,8 +1,8 @@
 from flask import Flask, jsonify
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 import os
 
 app = Flask(__name__)
@@ -17,9 +17,9 @@ def scrape():
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.binary_location = "/usr/bin/google-chrome-stable"
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 
-    service = ChromeService(executable_path="/usr/local/bin/chromedriver")
+    service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     try:
@@ -34,4 +34,3 @@ def scrape():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-
