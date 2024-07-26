@@ -26,7 +26,6 @@ def scrape():
 
 @app.route('/')
 def home():
-    def home():
     return "Selenium-Wire is working"
 
 if __name__ == '__main__':
