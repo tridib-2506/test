@@ -4,8 +4,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.utils import ChromeType
 from selenium.common.exceptions import TimeoutException, WebDriverException
 
 app = Flask(__name__)
@@ -18,8 +16,11 @@ def scrape():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     
+    # Use the pre-installed Chrome on Render
+    chrome_options.binary_location = "/usr/bin/google-chrome-stable"
+    
     try:
-        driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install(), options=chrome_options)
+        driver = webdriver.Chrome(options=chrome_options)
         driver.get("https://www.google.com")
         
         title = driver.title
@@ -43,7 +44,7 @@ def scrape():
 
 @app.route('/')
 def home():
-    return "Selenium-Wire is working"
+    return "Selenium is working"
 
 if __name__ == '__main__':
-    app.run(debug=True, port=3000)
+    app.run(debug=True, port=10000)
