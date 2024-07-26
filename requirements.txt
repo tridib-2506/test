@@ -2,3 +2,4 @@ Flask
 selenium
 selenium-wire
 gunicorn
+flask-CORS
