@@ -1,5 +1,4 @@
 Flask
-selenium
-selenium-wire
+playwright
 gunicorn
 flask-CORS
