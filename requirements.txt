@@ -1,4 +1,4 @@
 Flask
-playwright
+selenium
 gunicorn
 flask-CORS
