@@ -1,32 +1,24 @@
 from flask import Flask, jsonify
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
+from playwright.sync_api import sync_playwright
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Selenium-Wire is working"
+    return "Playwright is working"
 
 @app.route('/scrape')
 def scrape():
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=chrome_options)
-
-    try:
-        driver.get("https://www.google.com")
-        title = driver.title
-    except Exception as e:
-        return jsonify({"error": str(e)})
-    finally:
-        driver.quit()
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        try:
+            page.goto("https://www.google.com")
+            title = page.title()
+        except Exception as e:
+            return jsonify({"error": str(e)})
+        finally:
+            browser.close()
 
     return jsonify({"title": title})
 
