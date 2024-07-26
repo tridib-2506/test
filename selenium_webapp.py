@@ -7,7 +7,8 @@ from selenium.webdriver.common.by import By
 
 app = Flask(__name__)
 
-def download_selenium():
+@app.route('/scrape')
+def scrape():
 
     chrome_options = Options()
     chrome_options.add_argument("--headless")
@@ -23,10 +24,10 @@ def download_selenium():
 
     return data
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def home():
-    if(request.method == 'GET'):
-        return download_selenium()
+    def home():
+    return "Selenium-Wire is working"
 
 if __name__ == '__main__':
     app.run(debug=True, port=3000)
