@@ -1,18 +1,10 @@
-from flask import Flask, jsonify
+import streamlit as st
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import os
 
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return "Selenium is working"
-
-@app.route('/scrape')
-def scrape():
+def scrape_google_title():
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
@@ -25,11 +17,14 @@ def scrape():
         driver.get("https://www.google.com")
         title = driver.title
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return f"Error: {str(e)}"
     finally:
         driver.quit()
 
-    return jsonify({"title": title})
+    return title
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+st.title("Google Title Scraper")
+
+if st.button("Scrape Google Title"):
+    title = scrape_google_title()
+    st.write(f"Title: {title}")
