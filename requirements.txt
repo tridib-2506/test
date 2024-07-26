@@ -1,4 +1,4 @@
-flask-restful
+flask
 selenium
 webdriver_manager
 gunicorn
